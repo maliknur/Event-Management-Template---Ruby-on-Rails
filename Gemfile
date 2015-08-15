@@ -30,6 +30,8 @@ gem 'hirb'
 
 gem 'bootstrap-sass'
 
+gem 'bootswatch-rails'
+
 gem 'bootstrap_form'
 
 gem 'simple_form'
