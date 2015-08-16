@@ -1,52 +1,73 @@
 <div class="container">
+		<% if flash[:notice] %>
+			<div class="row">
+				<div class="col-md-4 col-xs-12	alert alert-success">
+					<%= flash[:notice]  %>
+				</div>
+			</div>
+		<% end %>
 	<div class="row">
 		<h3>Welcome, <%= session[:user] %></h3>
-		<p>Here are some events in your state:</p>
 
 		<!-- EVENTS in USER's STATE -->
 		<%  if @events.any? %>
-		<table>
-			<th>Name</th>
-			<th>Date</th>
-			<th>Location</th>
-			<th>Host</th>
-			<th colspan="2">Action/Status</th>
+		<div class="col-md-10 col-xs-12">
+		<p>Here are some events in your state:</p>
+		<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>Location</th>
+				<th>Host</th>
+				<th colspan="2">Action/Status</th>
+			</tr>
 				<% @events.each do |event| %>
-				<td><%= @event.name %></td>
-				<td><%= @event.date %></td>
-				<td><%= @event.location %></td>
-				<td><%= @event.state %></td>
-				<td><%= @event.user.first_name %></td>
+				<tr>
+				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+				<td><%= date_for_display(event.date) %></td>
+				<td><%= event.location %></td>
+				<td><%= event.user.first_name %></td>
 				<td>Edit Delete</td>
+				</tr>
 				<% end %>
 
 		</table>
+		<hr>
+		</div>
 		<% else %>
+
 			<h4 class="alert alert-warning">Sorry no events found in your state...</h4>
 		<% end %>	
+
 	</div>
 	
 	<!-- EVENTS IN OTHER STATE'S -->
 	<div class="row">
 		<% if @events_all.any?  %>	
-		<table>
+		<div class="col-md-10 col-xs-12">
+		<p>Here are some events in other states:</p>
+		<table class="table table-striped">
+			<tr>
 			<th>Name</th>
 			<th>Date</th>
 			<th>Location</th>
 			<th>State</th>
 			<th>Host</th>
 			<th>Action</th>
-				<% @events.each do |event| %>
-				<td><%= @event.name %></td>
-				<td><%= @event.date  %></td>
-				<td><%= @event.location %></td>
-				<td><%= @event.state %></td>
-				<td><%= @event.state %></td>
-				<td><%= @event.user.first_name  %></td>
+			</tr>
+				<% @events_all.each do |event| %>
+				<tr>
+				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
+				<td><%= date_for_display(event.date)  %></td>
+				<td><%= event.location %></td>
+				<td><%= event.state %></td>
+				<td><%= event.user.first_name  %></td>
 				<td>Join</td>
+				</tr>
 				<% end %>
 
 		</table>
+		</div>
 		<% else %>
 			<h4 class="alert alert-warning">Sorry no events found in other states...</h4>
 		<% end %>	
@@ -58,9 +79,57 @@
 	<div class="row">
 		<h3>Add event</h3>
 		<div class="col-md-6 col-xs-12 well">
-			<%= form_for(:event, :url=>{:controller => 'events', :action=>'create'}, :html => {:class => "form-horizontal"})   %>
+			<%= form_for(:event, :url=>{:controller => 'events', :action=>'create'}, :html => {:class => "form-horizontal"}) do |f|   %>
+			<div class="form-group">
+				<%= f.label :name, 'Name:', class: "form-label col-md-2 col-xs-12"  %>
+				<%= f.hidden_field :user_id, :value => session[:user_id]  %>
+				<div class="col-md-10 col-xs-12">
+					<%= f.text_field :name, class: "form-control"  %>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<%= f.label :date, 'Date:', class: "form-label col-md-2 col-xs-12"  %>
+				<div class="col-md-10 col-xs-12">
+					<div class="input-group date">
+  					<input type="text" name="date" id="date" class="form-control">
+  						<span class="input-group-addon">
+  							<i class="glyphicon glyphicon-th"></i>
+  						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+					<%= f.label :location, 'Location:', class: "form-label col-md-2 col-xs-12 text-right"  %>
+					<div class="col-md-10 col-xs-12">
+						<div class="col-md-8 col-xs-8"  style="right-padding: 0px; left-padding: 0px; padding-left: 0px; padding-right: 0px;">
+						<%= f.text_field :location, class: "form-control"  %>
+						</div>
+						<div class="col-md-4 col-xs-4" style="right-padding: 0px; padding-right: 0px;" >
+						<%= select_tag :state, options_for_select(us_states), class: "form-control" %>
+						</div>
+					</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-8 col-md-offset-4 col-xs-12">
+					<%= f.submit :Add, class: "btn btn-primary pull-right col-md-4"  %>
+				</div>
+			</div>
+
+
+			
+				
+			<% end %>
+	
 		</div>
-	</div>
 	
 	
 </div>
+
+<script>
+$(document).ready(function(){
+$('.input-group.date').datepicker({"format": "yyyy-mm-dd",
+"autoclose": true});});
+</script>

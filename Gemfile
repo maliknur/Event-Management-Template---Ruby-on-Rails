@@ -38,6 +38,8 @@ gem 'simple_form'
 
 gem 'country_select'
 
+gem 'bootstrap-datepicker-rails'
+
 gem 'rails_12factor', group: :development
 
 # Use Unicorn as the app server

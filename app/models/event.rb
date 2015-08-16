@@ -1,4 +1,4 @@
 class Event < ActiveRecord::Base
-  belongs_to :user, foreign_key: 'host'
+  belongs_to :user
 
 end

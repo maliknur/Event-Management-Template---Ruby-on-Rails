@@ -7,7 +7,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    puts ">>>>>>>>>>>>>>>>>>>> #{user_params}"
     @user = User.new(user_params)
     @user.state = params[:state]
     if @user.save
