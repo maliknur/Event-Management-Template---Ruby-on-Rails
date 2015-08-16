@@ -17,12 +17,19 @@
  */
 
  @import "bootstrap-sprockets";
- @import "bootswatch/lumen/variables";
+ @import "bootswatch/sandstone/variables";
  @import "bootstrap";
- @import "bootswatch/lumen/bootswatch";
+ @import "bootswatch/sandstone/bootswatch";
 
 div > h3{
 	margin-top:10px;
 }
 
 
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+
+  }
+}
