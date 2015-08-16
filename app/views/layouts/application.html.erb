@@ -21,13 +21,18 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Events</a></li>
-            <li><a href="#">Locations</a></li>
+            <li class="<%= 'active' if current_page?(root_path) %>"><a href="/">Home</a></li>
+            <li class="<%= 'active' if current_page?(events_path) %>"><a href="/events">Events</a></li>
+            <li class=""><a href="/events">Locations</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/sessions/new">Login</a></li>
-            <li class="active"><a href="/users/new">Signup</a></li>
+          	<li><a href="/users/<%= session[:user_id] %>"><%= session[:user] %></a></li>
+          	<% if session[:user_id] %>
+				<li><%= link_to 'Logout', sessions_path, method: :delete %></li>
+			<% else %>
+				<li class="<%= 'active' if current_page?(sessions_new_path) %>"><a href="/sessions/new">Login</a></li>
+            	<li class="<%= 'active' if current_page?(users_new_path) %>"><a href="/users/new">Signup</a></li>
+			<% end %>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

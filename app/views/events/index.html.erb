@@ -1,0 +1,66 @@
+<div class="container">
+	<div class="row">
+		<h3>Welcome, <%= session[:user] %></h3>
+		<p>Here are some events in your state:</p>
+
+		<!-- EVENTS in USER's STATE -->
+		<%  if @events.any? %>
+		<table>
+			<th>Name</th>
+			<th>Date</th>
+			<th>Location</th>
+			<th>Host</th>
+			<th colspan="2">Action/Status</th>
+				<% @events.each do |event| %>
+				<td><%= @event.name %></td>
+				<td><%= @event.date %></td>
+				<td><%= @event.location %></td>
+				<td><%= @event.state %></td>
+				<td><%= @event.user.first_name %></td>
+				<td>Edit Delete</td>
+				<% end %>
+
+		</table>
+		<% else %>
+			<h4 class="alert alert-warning">Sorry no events found in your state...</h4>
+		<% end %>	
+	</div>
+	
+	<!-- EVENTS IN OTHER STATE'S -->
+	<div class="row">
+		<% if @events_all.any?  %>	
+		<table>
+			<th>Name</th>
+			<th>Date</th>
+			<th>Location</th>
+			<th>State</th>
+			<th>Host</th>
+			<th>Action</th>
+				<% @events.each do |event| %>
+				<td><%= @event.name %></td>
+				<td><%= @event.date  %></td>
+				<td><%= @event.location %></td>
+				<td><%= @event.state %></td>
+				<td><%= @event.state %></td>
+				<td><%= @event.user.first_name  %></td>
+				<td>Join</td>
+				<% end %>
+
+		</table>
+		<% else %>
+			<h4 class="alert alert-warning">Sorry no events found in other states...</h4>
+		<% end %>	
+
+	</div>
+
+	<!-- ADD EVENT -->
+
+	<div class="row">
+		<h3>Add event</h3>
+		<div class="col-md-6 col-xs-12 well">
+			<%= form_for(:event, :url=>{:controller => 'events', :action=>'create'}, :html => {:class => "form-horizontal"})   %>
+		</div>
+	</div>
+	
+	
+</div>

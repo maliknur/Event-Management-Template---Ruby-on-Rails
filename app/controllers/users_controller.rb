@@ -7,9 +7,11 @@ class UsersController < ApplicationController
   end
 
   def create
+    puts ">>>>>>>>>>>>>>>>>>>> #{user_params}"
     @user = User.new(user_params)
+    @user.state = params[:state]
     if @user.save
-      flash[:notice] = "You signed up successfully, please login"
+      flash[:notice] = "You signed up successfully, please"
       flash[:color] = "valid"
         redirect_to "/users/new"
     else
@@ -22,6 +24,7 @@ class UsersController < ApplicationController
   end
 
   def show
+    @user = User.find(params[:id])
   end
 
   def update
@@ -29,7 +32,7 @@ class UsersController < ApplicationController
 
   private 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :location, :password, :password_confirmation)
+    params.require(:user).permit(:first_name, :last_name, :email, :location, :state, :password, :password_confirmation)
 
   end
 
