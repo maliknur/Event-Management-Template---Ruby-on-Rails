@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # USERS routes
   get 'users/new' => 'users#new'
 
-  get 'users/edit'
+  get 'users/:id/edit' => 'users#edit'
 
   post 'users' => 'users#create'
   
@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   get 'users/:id'=> 'users#show'
 
-  get 'users/update'
+  patch 'users/:id' => 'users#update'
 
   #SESSIONS routes
 
@@ -32,15 +32,16 @@ Rails.application.routes.draw do
   post 'events' => 'events#create'
 
   post 'events/join' => 'events#join'
+
   post 'events/cancel' => 'events#cancel'
+
+  get 'events/:id/edit' => 'events#edit'
 
   get 'events/:id' => 'events#show'
 
-  get 'events/edit'
+  patch 'events/:id' => 'events#update'
 
-  get 'events/update'
-
-  get  'events/destroy'
+  delete 'events/:id' =>  'events#destroy'
 
   get 'events/show'
 

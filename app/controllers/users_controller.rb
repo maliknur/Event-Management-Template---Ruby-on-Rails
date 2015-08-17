@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
   end
 
   def create
@@ -27,6 +28,14 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = User.find(params[:id])
+    result = @user.update_attributes(user_params)
+      if result
+        redirect_to "/users/#{@user.id}"
+        flash[:notice] = "User successfully updated"
+        flash[:color] = "success"
+      end
+
   end
 
   private 

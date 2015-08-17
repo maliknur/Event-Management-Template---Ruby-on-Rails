@@ -1,8 +1,42 @@
 <div class="container">
-	<h1><%= @event.name  %></h1>
+	<div class="row">
+	<!-- EVENT DETAILS -->
+		<div class="col-md-6 col-xs-12">
+			<h3>Event: <b><%= @event.name %></b></h3>
 
-	<p>Host: <b><%= @event.user.first_name %> <%= @event.user.last_name  %></b></p>
-	<p>Date: <b><%= date_for_display(@event.date)  %></b></p>
-	<p>Location: <b><%= @event.location %> <%= @event.state  %></b></p>
+			<p>Host: <b><%= @event.user.first_name %> <%= @event.user.last_name  %></b></p>
+			<p>Date: <b><%= date_for_display(@event.date)  %></b></p>
+			<p>Location: <b><%= @event.location %> <%= @event.state  %></b></p>
+			<p>Users are joining: <b><%= @event.users.count  %></b></p>
+			<p><a href="/events">Back to Events list</a></p>
+			
+			<br>
+			<h4>List of users attending the event</h4>
+			<table class="table">
+				<tr>
+				<th>Name</th>
+				<th>Location</th>
+				<th>State</th>
+				</tr>
+				
+				<% @event.users.each do |user| %>
+				
+				<tr>
+				<td><%= user.first_name %> <%= user.last_name  %></td>
+				<td><%= user.location %></td>
+				<td><%= user.state %></td>
+				</tr>
+				<% end %>
+			</table>
+
+
+		</div>
+
+	<!-- EVENT DISCUSSION -->
+		<div class="col-md-6 col-xs-12">
+			
+		</div>
+	</div>
+	
 
 </div>

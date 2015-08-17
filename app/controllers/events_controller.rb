@@ -23,7 +23,7 @@ class EventsController < ApplicationController
     
     if @event.save
       flash[:notice] = "Event successfully created"
-      flash[:color] = "valid"
+      flash[:color] = "success"
       redirect_to "/events"
     else
       render "index"
@@ -51,12 +51,31 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @event = Event.find(params[:id])
   end
 
   def update
+    @event = Event.find(params[:id])
+    @event.date = params[:date]
+    result = @event.update_attributes(event_params)
+      if result
+        redirect_to "/events"
+        flash[:notice] = "Event successfully updated"
+        flash[:color] = "success"
+      end
   end
 
   def destroy
+    @event = Event.find(params[:id])
+    if @event
+      @event.destroy
+      flash[:notice] = "Event successfully deleted"
+      flash[:color] = "warning"
+    redirect_to '/events'
+    else
+    redirect_to '/events'
+    end
+
   end
 
   def show

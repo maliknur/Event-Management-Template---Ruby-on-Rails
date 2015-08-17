@@ -1,2 +1,63 @@
-<h1>Events#edit</h1>
-<p>Find me in app/views/events/edit.html.erb</p>
+<div class="container">
+	
+
+	<div class="row">
+	<h3>Event: <b><%= @event.name %></b></h3>
+		<p>You can edit your event</p>
+		<div class="col-md-6 col-xs-12 well">
+		<br>
+			<%= form_for(:event, :url=>{:controller => 'events', :action=>'update'}, :method=> "patch", :id=> @event.id, :html => {:class => "form-horizontal"}) do |f|   %>
+			<div class="form-group">
+				<%= f.label :name, 'Name:', class: "form-label col-md-2 col-xs-12"  %>
+				<%= f.hidden_field :host, :value => session[:user_id]  %>
+				<div class="col-md-10 col-xs-12">
+					<%= f.text_field :name, class: "form-control"  %>
+				</div>
+
+			</div>
+			<div class="form-group">
+				<%= f.label :date, 'Date:', class: "form-label col-md-2 col-xs-12"  %>
+				<div class="col-md-10 col-xs-12">
+					<div class="input-group date">
+  					<input type="text" name="date" id="date" class="form-control" value="<%= date_for_display(@event.date) %>">
+  						<span class="input-group-addon">
+  							<i class="glyphicon glyphicon-th"></i>
+  						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+					<%= f.label :location, 'Location:', class: "form-label col-md-2 col-xs-12 text-right"  %>
+					<div class="col-md-10 col-xs-12">
+						<div class="col-md-8 col-xs-8"  style="right-padding: 0px; left-padding: 0px; padding-left: 0px; padding-right: 0px;">
+						<%= f.text_field :location, class: "form-control"  %>
+						</div>
+						<div class="col-md-4 col-xs-4" style="right-padding: 0px; padding-right: 0px;" >
+						<%= select_tag :state, options_for_select(us_states, :selected=> @event.state), class: "form-control" %>
+						</div>
+					</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-6 col-md-offset-6 col-xs-12">
+				<%= link_to "Cancel", events_path, class: "btn btn-default col-md-4 col-xs-12"  %>
+					<%= f.submit :Update, class: "btn btn-primary pull-right col-md-6 col-xs-12"  %>
+				</div>
+			</div>
+
+
+			
+				
+			<% end %>
+		</div>
+	</div>
+
+
+</div>
+
+<script>
+$(document).ready(function(){
+$('.input-group.date').datepicker({"format": "yyyy-mm-dd",
+"autoclose": true, orientation: "top auto"});});
+</script>

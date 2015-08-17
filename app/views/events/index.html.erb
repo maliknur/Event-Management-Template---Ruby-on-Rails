@@ -1,7 +1,7 @@
 <div class="container">
 		<% if flash[:notice] %>
 			<div class="row">
-				<div class="col-md-4 col-xs-12	alert alert-success">
+				<div class="col-md-4 col-xs-12	alert alert-<%= flash[:color]%>">
 					<%= flash[:notice]  %>
 				</div>
 			</div>
@@ -26,17 +26,23 @@
 				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
 				<td><%= date_for_display(event.date) %></td>
 				<td><%= event.location %></td>
-				<td><%= event.user  %></td>
+				<!-- strange behaviour of Event model -->
+				<% u = User.find(event.host) %>
+				<td><%= u.first_name  %></td>
 				<td>
+				<!-- if logged user is Host of Event show EDIT AND DELETE -->
 					<% if event.host == session[:user_id] %>
-					<a href="">Edit</a> | <a href="">Delete</a>
+					<a href="/events/<%= event.id %>/edit" class="btn btn-xs btn-success"> Edit </a> | <!-- <a href="" class="btn btn-xs btn-danger">Delete</a> -->
+					<%= link_to 'Delete',  { action: :destroy, id: event.id }, method: :delete, data: { confirm: 'Are you sure to delete ' + event.name + '?'}, class: "btn btn-xs btn-danger" %>
+
+				<!-- if logged user is joined Event show STATUS and CANCEL -->
 					<% elsif user_events(event.id, session[:user_id]) %>
 					<div class="row">
-						joined 
-					<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'cancel'}, :html=>{:style => "display:inline"}) do |f|   %>
+						joined |
+						<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'cancel'}, :html=>{:style => "display:inline"}) do |f|   %>
 					<%= f.hidden_field :user_id, :value => session[:user_id] %>
 					<%= f.hidden_field :event_id, :value => event.id  %>
-					<%= f.submit :Cancel, class: "btn btn-xs btn-primary"  %>
+					<%= f.submit :Cancel, class: "btn btn-xs btn-default"  %>
 					<% end %>
 					</div>
 
@@ -134,8 +140,8 @@
 			</div>
 
 			<div class="form-group">
-				<div class="col-md-8 col-md-offset-4 col-xs-12">
-					<%= f.submit :Add, class: "btn btn-primary pull-right col-md-4"  %>
+				<div class="col-md-6 col-md-offset-6 col-xs-12">
+					<%= f.submit :Add, class: "btn btn-primary pull-right col-md-6"  %>
 				</div>
 			</div>
 

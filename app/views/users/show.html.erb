@@ -1,6 +1,19 @@
-<h1>User profile</h1>
-<p>Name: <%= @user.first_name%> <%= @user.last_name  %></p>
-<p>Email: <%= @user.email %></p>
-<p>Location: <%= @user.location  %>, <%= @user.state  %></p>
-<p><a href="/users/<%= @user.id %>">Edit</a></p>
+<div class="container">
+<% @page_title = "User profile" %>
+	<% if flash[:notice] %>
+			<div class="row">
+				<div class="col-md-4 col-xs-12	alert alert-<%= flash[:color]%>">
+					<%= flash[:notice]  %>
+				</div>
+			</div>
+	<% end %>
+
+	<h3><b>User profile</b></h3>
+	<p>Name: <b><%= @user.first_name%> <%= @user.last_name  %></b></p>
+	<p>Email: <b><%= @user.email %></b></p>
+	<p>Location: <b><%= @user.location  %>, <%= @user.state  %></b></p>
+	<p>People are joining: <b></b></p>
+	<p><a href="/users/<%= @user.id %>/edit">Edit</a></p>
+	<p><a href="/events">Back to Events list</a></p>
+</div>
 
