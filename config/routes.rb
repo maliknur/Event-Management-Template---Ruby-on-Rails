@@ -31,6 +31,9 @@ Rails.application.routes.draw do
 
   post 'events' => 'events#create'
 
+  post 'events/join' => 'events#join'
+  post 'events/cancel' => 'events#cancel'
+
   get 'events/:id' => 'events#show'
 
   get 'events/edit'

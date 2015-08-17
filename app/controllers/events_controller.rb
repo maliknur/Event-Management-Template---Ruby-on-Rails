@@ -6,8 +6,8 @@ class EventsController < ApplicationController
   def index
     if session[:user]
       state = User.where("id=?", session[:user_id]).limit(1).pluck(:state)
-      @events = Event.where(["state = ?", state])
-      @events_all = Event.where(["state <> ?", state]).limit(10)
+      @events = Event.where(["state = ?", state]).order(created_at: :desc)
+      @events_all = Event.where(["state <> ?", state]).limit(10).order(created_at: :desc)
 
     else
       redirect_to "/sessions/new"
@@ -16,8 +16,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>> #{params[:date]}"
-    @event = Event.new(event_params)
+    @user = User.find(session[:user_id])
+    @event = @user.events.new(event_params)
     @event.state = params[:state]
     @event.date = params[:date]
     
@@ -28,6 +28,25 @@ class EventsController < ApplicationController
     else
       render "index"
     end
+
+  end
+
+  def join
+    @userevent = UserEvent.new(userevent_params)
+    @userevent.save
+    redirect_to '/'
+  end
+
+  # Cancel User's participation in Event
+  def cancel
+   
+     user = User.find(userevent_params["user_id"])
+     event = user.events.find(userevent_params["event_id"])
+
+     if event
+        user.events.delete(event)
+        redirect_to '/'
+     end
 
   end
 
@@ -46,7 +65,11 @@ class EventsController < ApplicationController
 
   private
   def event_params
-    params.require(:event).permit(:name, :date, :location, :state, :user_id)
+    params.require(:event).permit(:name, :date, :location, :state, :host)
 
   end
+  def userevent_params
+    params.require(:userevent).permit(:user_id, :event_id)
+  end
+
 end

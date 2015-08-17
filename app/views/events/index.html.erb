@@ -26,8 +26,28 @@
 				<td><a href="/events/<%= event.id %>"><%= event.name %></a></td>
 				<td><%= date_for_display(event.date) %></td>
 				<td><%= event.location %></td>
-				<td><%= event.user.first_name %></td>
-				<td>Edit Delete</td>
+				<td><%= event.user  %></td>
+				<td>
+					<% if event.host == session[:user_id] %>
+					<a href="">Edit</a> | <a href="">Delete</a>
+					<% elsif user_events(event.id, session[:user_id]) %>
+					<div class="row">
+						joined 
+					<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'cancel'}, :html=>{:style => "display:inline"}) do |f|   %>
+					<%= f.hidden_field :user_id, :value => session[:user_id] %>
+					<%= f.hidden_field :event_id, :value => event.id  %>
+					<%= f.submit :Cancel, class: "btn btn-xs btn-primary"  %>
+					<% end %>
+					</div>
+
+					<% else %>
+					<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'join'}) do |f|   %>
+					<%= f.hidden_field :user_id, :value => session[:user_id] %>
+					<%= f.hidden_field :event_id, :value => event.id  %>
+					<%= f.submit :Join, class: "btn btn-xs btn-primary"  %>
+					<% end %>
+					<% end %>
+				</td>
 				</tr>
 				<% end %>
 
@@ -79,10 +99,11 @@
 	<div class="row">
 		<h3>Add event</h3>
 		<div class="col-md-6 col-xs-12 well">
+		<br>
 			<%= form_for(:event, :url=>{:controller => 'events', :action=>'create'}, :html => {:class => "form-horizontal"}) do |f|   %>
 			<div class="form-group">
 				<%= f.label :name, 'Name:', class: "form-label col-md-2 col-xs-12"  %>
-				<%= f.hidden_field :user_id, :value => session[:user_id]  %>
+				<%= f.hidden_field :host, :value => session[:user_id]  %>
 				<div class="col-md-10 col-xs-12">
 					<%= f.text_field :name, class: "form-control"  %>
 				</div>
