@@ -20,6 +20,11 @@ class UsersController < ApplicationController
 
   end
 
+  def event
+    @user = User.find(params[:id])
+    # @userevent = UserEvent.find_by(user_id: params[:id])
+  end
+
   def destroy
   end
 

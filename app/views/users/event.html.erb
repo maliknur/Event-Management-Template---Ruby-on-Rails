@@ -1,0 +1,55 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-10 col-xs-12">
+			<h3>Here is your upcoming events</h3>
+			<table class="table table-striped">
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>Location</th>
+				<th>Host</th>
+				<th colspan="2">Action/Status</th>
+			</tr>
+				<% @user.events.each do |e| %>
+				<tr>
+				<td><a href="/events/<%= e.id %>"><%= e.name %></a></td>
+				<td><%= date_for_display(e.date) %></td>
+				<td><%= e.location %></td>
+				<!-- strange behaviour of Event model -->
+				<% u = User.find(e.host) %>
+				<td><%= u.first_name  %></td>
+				<td>
+				<!-- if logged user is Host of Event show EDIT AND DELETE -->
+					<% if e.host == session[:user_id] %>
+					<a href="/events/<%= e.id %>/edit" class="btn btn-xs btn-success"> Edit </a> | 
+					<%= link_to 'Delete',  { action: :destroy, id: e.id }, method: :delete, data: { confirm: 'Are you sure to delete ' + e.name + '?'}, class: "btn btn-xs btn-danger" %>
+
+				<!-- if logged user is joined Event show STATUS and CANCEL -->
+					<% elsif user_events(e.id, session[:user_id]) %>
+					<div class="row">
+						joined |
+						<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'cancel'}, :html=>{:style => "display:inline"}) do |f|   %>
+					<%= f.hidden_field :user_id, :value => session[:user_id] %>
+					<%= f.hidden_field :event_id, :value => e.id  %>
+					<%= f.submit :Cancel, class: "btn btn-xs btn-default"  %>
+					<% end %>
+					</div>
+
+					<% else %>
+					<%= form_for(:userevent, :url=>{:controller => 'events', :action=>'join'}) do |f|   %>
+					<%= f.hidden_field :user_id, :value => session[:user_id] %>
+					<%= f.hidden_field :event_id, :value => e.id  %>
+					<%= f.submit :Join, class: "btn btn-xs btn-primary"  %>
+					<% end %>
+					<% end %>
+
+				</td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+
+	</div>
+		
+	
+</div>

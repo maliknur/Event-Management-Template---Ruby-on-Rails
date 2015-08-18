@@ -28,6 +28,8 @@ gem 'bcrypt', '~> 3.1.7', :require => 'bcrypt'
 
 gem 'hirb'
 
+gem 'will_paginate', '~> 3.0'
+
 gem 'bootstrap-sass'
 
 gem 'bootswatch-rails'
@@ -35,6 +37,8 @@ gem 'bootswatch-rails'
 gem 'bootstrap_form'
 
 gem 'simple_form'
+
+gem 'date_validator'
 
 gem 'country_select'
 

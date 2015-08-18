@@ -1,13 +1,17 @@
 class EventsController < ApplicationController
- 
+  
+  before_filter :login_required
+
   def new
   end
 
   def index
+    @event = Event.new
+  
     if session[:user]
       state = User.where("id=?", session[:user_id]).limit(1).pluck(:state)
       @events = Event.where(["state = ?", state]).order(created_at: :desc)
-      @events_all = Event.where(["state <> ?", state]).limit(10).order(created_at: :desc)
+      @events_all = Event.where(["state <> ?", state]).order(created_at: :desc).paginate(page: params[:page], per_page: 5)
 
     else
       redirect_to "/sessions/new"
@@ -26,7 +30,8 @@ class EventsController < ApplicationController
       flash[:color] = "success"
       redirect_to "/events"
     else
-      render "index"
+      flash[:errors] = @event.errors.full_messages
+      redirect_to "/events"
     end
 
   end
@@ -34,6 +39,8 @@ class EventsController < ApplicationController
   def join
     @userevent = UserEvent.new(userevent_params)
     @userevent.save
+    flash[:notice] = "You successfully joined event"
+    flash[:color] = "info"
     redirect_to '/'
   end
 
@@ -45,6 +52,8 @@ class EventsController < ApplicationController
 
      if event
         user.events.delete(event)
+        flash[:notice] = "You successfully deleted event"
+        flash[:color] = "info"
         redirect_to '/'
      end
 
@@ -57,6 +66,7 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     @event.date = params[:date]
+    @event.state = params[:state]
     result = @event.update_attributes(event_params)
       if result
         redirect_to "/events"

@@ -12,6 +12,7 @@
 			
 			<br>
 			<h4>List of users attending the event</h4>
+			<div class="table-responsive">
 			<table class="table">
 				<tr>
 				<th>Name</th>
@@ -28,13 +29,36 @@
 				</tr>
 				<% end %>
 			</table>
+			</div>
 
 
 		</div>
 
 	<!-- EVENT DISCUSSION -->
 		<div class="col-md-6 col-xs-12">
-			
+			<div class="col-md-12 col-md-offset-0">
+				<h3>Discussion about this event</h3>
+				<% if @event.comments.any? %>
+				<div class="comments">
+				<% @event.comments.each do |c| %>
+				<p><%= c.user.first_name %> says: <i><%= c.comment  %></i></p>
+				<p class="pull-right comment_time"><%= date_for_display(c.created_at) %></p>
+				<br>
+				<hr>
+				<% end %>
+					
+				</div>
+				<% end %>
+				<%= form_for(:comment, :url=>{:controller => 'comments', :action => 'create'}) do |f|   %>
+				<div class="form-group">
+					<%= f.label :comment, 'Add your comment', class:"form-label"  %>
+					<%= f.hidden_field :user_id, :value=> session[:user_id]  %>
+					<%= f.hidden_field :event_id, :value => @event.id  %>
+					<%= f.text_area :comment, class: "form-control"  %>
+					<%= f.submit :Comment, class: "btn btn-primary pull-right"  %>
+					<% end %>
+				</div>
+			</div>
 		</div>
 	</div>
 	
