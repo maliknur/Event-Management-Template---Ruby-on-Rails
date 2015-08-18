@@ -21,7 +21,7 @@ Bootstrap-SASS
 
 ## Usage
 ```
-git clone
+git clone https://github.com/maliknur/Event-Management-Template---Ruby-on-Rails.git
 bundle install
 rake db:create
 rake db:migrate
