@@ -23,7 +23,7 @@
           <ul class="nav navbar-nav">
             <li class="<%= 'active' if current_page?(root_path) %>"><a href="/">Home</a></li>
             <li class="<%= 'active' if current_page?(events_path) %>"><a href="/users/<%= session[:user_id] %>/events">My events</a></li>
-            <li class=""><a href="/events">Locations</a></li>
+            <li class=""><a href="/events/location">Locations</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           	<% if session[:user_id] %>

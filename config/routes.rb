@@ -38,14 +38,16 @@ Rails.application.routes.draw do
   post 'events/cancel' => 'events#cancel'
 
   get 'events/:id/edit' => 'events#edit'
+  
+  get 'events/location' => 'events#location'
 
-  get 'events/:id' => 'events#show'
 
   patch 'events/:id' => 'events#update'
 
   delete 'events/:id' =>  'events#destroy'
 
-  get 'events/show'
+  get 'events/:id' => 'events#show'
+
 
  
   #COMMENTS routes

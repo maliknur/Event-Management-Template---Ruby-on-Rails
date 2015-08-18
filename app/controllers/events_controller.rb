@@ -19,6 +19,10 @@ class EventsController < ApplicationController
     end
   end
 
+  def location
+    @events = Event.all.order(state: :asc).paginate(page: params[:page], per_page: 10)
+  end
+
   def create
     @user = User.find(session[:user_id])
     @event = @user.events.new(event_params)

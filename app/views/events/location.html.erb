@@ -1,0 +1,27 @@
+<div class="container">
+
+	<div class="col-md-10 col-xs-12">
+		<h3>List of all events with locations</h3>
+			<table class="table table-striped">
+			<tr>
+				<th>State</th>
+				<th>Location</th>
+				<th>Name</th>
+				<th>Date</th>
+			</tr>
+				<% @events.each do |e| %>
+				<tr>
+					<td><%= e.state  %></td>
+					<td><%= e.location  %></td>
+					<td><%=  e.name %> </td>
+					<td><%= date_for_display(e.date)  %></td>	
+
+				</tr>	
+				<% end %>
+			</table>
+			<div class="pull-right">
+				<%= will_paginate @events_all %>
+			</div>
+	</div>
+
+</div>
